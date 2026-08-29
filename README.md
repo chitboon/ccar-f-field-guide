@@ -2,9 +2,6 @@
 
 An unofficial study guide for the **Claude Certified Architect – Foundations** (CCAR-F) exam.
 
-One of four Claude certification field guides, each in its own repository and
-built to the same standard: [ccao-f-field-guide](https://github.com/chitboon/ccao-f-field-guide) (Associate – Foundations, **complete** — start there if you want to see the finished shape of these guides), [ccar-p-field-guide](https://github.com/chitboon/ccar-p-field-guide) (Architect – Professional, not started), [ccdv-f-field-guide](https://github.com/chitboon/ccdv-f-field-guide) (Developer – Foundations, not started).
-
 ---
 
 ## No exam content. Ever.
