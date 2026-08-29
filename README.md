@@ -11,6 +11,8 @@ An unofficial study guide for the **Claude Certified Architect – Foundations**
 
 210 practice items · 60-item mock exam · 14 trap patterns · domain drills · cheatsheet · lesson plan
 
+Also available: **[CCAO-F Field Guide](https://github.com/chitboon/ccao-f-field-guide)** (Associate – Foundations — 106 practice items, 4D framework, sequencing items)
+
 ## The exam
 
 | | |
@@ -40,6 +42,12 @@ Five domains: **Agentic Architecture (27%)** · Tool Design & MCP (18%) · Claud
 ## The one rule that answers most items
 
 **Deterministic beats probabilistic.** When torn between two options, ask: which one makes the failure impossible rather than less likely? Hooks and gates beat prompt instructions. Schemas beat "please return valid JSON." The plausible-but-softer option is the distractor's home address.
+
+## Why this exists
+
+Most CCAR-F prep material teaches the concepts but not the **judgement patterns**. This guide is built backwards from a real passing sitting at 892/1000 (cut 720), and it names the seven gaps that confident preparation still left exposed — multi-phase workflows, prefilled responses as structured output, MCP scope selection, inclusion/exclusion criteria, Glob vs Grep for call sites, CLI startup flags, and the difference between recognition and mechanism understanding.
+
+The exam consistently tests one principle across all five domains: **deterministic beats probabilistic**. Hooks and gates beat prompt instructions. Schemas beat "please return valid JSON." Pinned fact blocks beat better summarisation. This guide teaches you to spot the structural mechanism over the plausible-but-softer distractor.
 
 ## No exam content. Ever.
 

@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://chitboon.github.io/ccar-f-field-guide/sitemap.xml
