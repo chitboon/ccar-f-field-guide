@@ -1,111 +1,64 @@
 # CCAR-F Field Guide
 
-An unofficial study guide for the **Claude Certified Architect – Foundations** (CCAR-F) exam.
+[![License: CC BY 4.0](https://img.shields.io/badge/License-CC%20BY%204.0-lightgrey.svg)](https://creativecommons.org/licenses/by/4.0/)
+[![GitHub Pages](https://img.shields.io/badge/Guide-HTML-blue)](https://chitboon.github.io/ccar-f-field-guide/guide/)
+[![GitHub last commit](https://img.shields.io/github/last-commit/chitboon/ccar-f-field-guide)](https://github.com/chitboon/ccar-f-field-guide/commits/main)
+[![GitHub stars](https://img.shields.io/github/stars/chitboon/ccar-f-field-guide?style=social)](https://github.com/chitboon/ccar-f-field-guide/stargazers)
 
----
+An unofficial study guide for the **Claude Certified Architect – Foundations** (CCAR-F) exam by Anthropic.
 
-## No exam content. Ever.
+**[Read the interactive guide →](https://chitboon.github.io/ccar-f-field-guide/guide/)**
 
-This guide contains **no questions, answers, or content from the live
-exam**, and it never will. Candidates agree to keep exam content
-confidential, so anything advertising itself as "real exam questions" or a
-"dump" is either fabricated or a breach — and using it puts your credential
-at risk.
-
-Every practice item in this repo was written from the published exam
-objectives. See [SOURCES.md](SOURCES.md) for exactly what informed this
-guide.
+210 practice items · 60-item mock exam · 14 trap patterns · domain drills · cheatsheet · lesson plan
 
 ## The exam
 
-- 60 items, single-answer (four options, one correct — no multi-select)
-- 720 on a 100–1000 scale to pass
-- $125, 12 months' validity
-- Proctored, online or at a test centre
-
-Five domains and their weights, from the published exam guide:
-
-| Domain | Weight |
+| | |
 |---|---|
-| Agentic Architecture & Orchestration | 27% |
-| Tool Design & MCP Integration | 18% |
-| Claude Code Configuration & Workflows | 20% |
-| Prompt Engineering & Structured Output | 20% |
-| Context Management & Reliability | 15% |
+| Items | 60, single-answer (four options, one correct) |
+| Time | 120 minutes |
+| Passing score | 720 / 1000 |
+| Fee | $125 USD |
+| Validity | 12 months |
+| Format | Proctored, online or test centre |
+
+Five domains: **Agentic Architecture (27%)** · Tool Design & MCP (18%) · Claude Code Config (20%) · Prompt Engineering & Structured Output (20%) · Context Management & Reliability (15%)
 
 ## What's here
 
-### Guide
+| Content | Description |
+|---|---|
+| [guide/](guide/) | Per-domain refreshers, blueprint, trap patterns |
+| [concept-drills/](concept-drills/) | 60 items — fast recall check, 12 per domain |
+| [practice/domain-drills/](practice/domain-drills/) | 50 items — scenario-dense, matching exam register |
+| [practice/targeted-drills/](practice/targeted-drills/) | 40 items — weak-spot focused drills |
+| [practice/mocks/](practice/mocks/) | 60-item full-length mock exam |
+| [practice/detailed-cheatsheet.md](practice/detailed-cheatsheet.md) | Golden rules and per-domain deep dives |
+| [LESSON-PLAN.md](LESSON-PLAN.md) | 6-phase preparation sequence |
+| [HOW-TO-PRACTISE.md](HOW-TO-PRACTISE.md) | Drill loop, calibration, hands-on reps |
 
-- **[guide/00-overview.md](guide/00-overview.md)** — blueprint, tier structure,
-  and the one mental habit that answers most items.
-- **[guide/d1-agentic-architecture-and-orchestration.md](guide/d1-agentic-architecture-and-orchestration.md)**
-  through **[guide/d5-context-management-and-reliability.md](guide/d5-context-management-and-reliability.md)** —
-  terse per-domain refreshers.
-- **[guide/trap-patterns.md](guide/trap-patterns.md)** — 14 trap patterns from
-  session drilling and post-exam analysis.
+## The one rule that answers most items
 
-### Practice material
+**Deterministic beats probabilistic.** When torn between two options, ask: which one makes the failure impossible rather than less likely? Hooks and gates beat prompt instructions. Schemas beat "please return valid JSON." The plausible-but-softer option is the distractor's home address.
 
-- **[practice/detailed-cheatsheet.md](practice/detailed-cheatsheet.md)** —
-  ~4,400 words of genuinely original Architect material, fully rewritten
-  reader-facing. The golden rules in Section 1 answer 70% of questions.
-- **[practice/exam-day-cram.md](practice/exam-day-cram.md)** — the 10-minute
-  pre-exam refresher.
+## No exam content. Ever.
 
-### Concept drills (direct register, fast recall check)
+This guide contains **no questions, answers, or content from the live exam**. Every practice item was written from the published exam objectives. See [SOURCES.md](SOURCES.md).
 
-- **[concept-drills/](concept-drills/)** — 12 items per domain, 60 total.
-  Direct, no-scenario items for mechanism recall. Sat in under 10 minutes.
+## Quick start
 
-### Domain drills (scenario register, Olivier density)
-
-- **[practice/domain-drills/](practice/domain-drills/)** — 10 items per
-  domain, 50 total. Scenario-dense stems matching the real exam's register.
-
-### Targeted drills
-
-- **[practice/targeted-drills/](practice/targeted-drills/)** — 4 drills
-  targeting specific weak spots: CI & Isolation, Codebase Exploration, Error
-  Handling & Structured Facts, Mixed Weak Spots.
-
-### Mock exam
-
-- **[practice/mocks/ccar-f-mock.md](practice/mocks/ccar-f-mock.md)** — 60
-  items from scratch, Olivier density, matching the real exam's blueprint
-  weights.
-
-### Study guides
-
-- **[LESSON-PLAN.md](LESSON-PLAN.md)** — a structured 6-phase preparation
-  sequence.
-- **[HOW-TO-PRACTISE.md](HOW-TO-PRACTISE.md)** — the drill loop, the
-  concrete-artifact rule, calibration techniques, and hands-on reps.
-
-## How to use this
-
-1. Read [LESSON-PLAN.md](LESSON-PLAN.md) for the full preparation sequence.
-2. Start with [HOW-TO-PRACTISE.md](HOW-TO-PRACTISE.md) for the drill loop
-   and calibration techniques.
-3. Follow the concept-drill → domain-drill → targeted-drill → mock sequence.
-
-The gap between "concept drill feels easy" and "mock feels hard" is real
-signal — it means you recognize mechanisms but cannot yet *select* them
-under scenario pressure, which is what the exam actually grades.
+1. Read [LESSON-PLAN.md](LESSON-PLAN.md)
+2. Start with [HOW-TO-PRACTISE.md](HOW-TO-PRACTISE.md)
+3. Follow: concept drills → domain drills → targeted drills → mock
 
 ## Sources
 
 See [SOURCES.md](SOURCES.md).
 
-## Contributing
-
-See [CONTRIBUTING.md](CONTRIBUTING.md). The one hard rule: **no exam content, ever.**
-
 ## Licence
 
-[CC BY 4.0](LICENSE) for the original writing. Quoted Academy material remains Anthropic's, and nothing third-party is reused here regardless of its own licence.
+[CC BY 4.0](LICENSE) for the original writing.
 
 ---
 
-Compiled by **Chit Boon Lee** and **Claude**.
-Unofficial. Not affiliated with, endorsed by, or sponsored by Anthropic.
+Compiled by **Chit Boon Lee** and **Claude**. Unofficial. Not affiliated with, endorsed by, or sponsored by Anthropic.
