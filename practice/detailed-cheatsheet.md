@@ -1,10 +1,10 @@
-# CCAR-F Detailed Cheat Sheet — Train Edition
+# CCAR-F Detailed Cheat Sheet
 
-**Claude Certified Architect – Foundations** · Exam today
-60 items (some multiple-response — watch for "select N") · 120 min · Pass 720/1000 · Pearson VUE (online or test center)
+**Claude Certified Architect – Foundations** · 60 items · 120 min · pass at 720/1000 · Pearson VUE (online or test centre)
+Format: every item is **single-answer — four options, one correct** (no multi-select). Distractors are closely spaced: usually the plausible prompt-level or over-engineered alternative to the correct mechanism.
 Weights: **D1 27% · D3 20% · D4 20% · D2 18% · D5 15%** → D1+D3+D4 = 67% of the exam.
 
-How to use this: Section 1 is the decision rules that answer most questions. Sections 2–6 are per-domain deep dives. Section 7 is every question you personally missed. Section 8 is logistics. ~1 hour read.
+How to use: Section 1 is the decision rules that answer most questions. Sections 2–6 are per-domain deep dives, with mechanism-level "how do I actually do this" detail where the exam tests it. Section 7 is a real candidate's error log, reframed as the confusions worth pre-empting. Section 8 is antipatterns, Section 9 logistics. ~1 hour read.
 
 ---
 
@@ -63,8 +63,14 @@ How to use this: Section 1 is the decision rules that answer most questions. Sec
 - Second lever: split generic tools into purpose-specific ones (`analyze_document` → `pull_line_items` / `flag_anomalies` / `rate_document_risk`).
 - **~4–5 tools per agent max.** Selection accuracy degrades sharply past that. General-purpose tools in specialized agents = scope creep → replace with capability-limited tools. 18 tools "for flexibility" = wrong.
 - High-frequency simple need → one narrow scoped tool locally; complex cases → coordinator.
-- Glob finds files (paths), Grep finds text (content). **Built-in tool > Bash equivalent** — content search → `Grep` directly, not `find`+`grep` via Bash.
 - **Edit anchor not unique → Read + Write the whole file.** Don't chain fragile anchored Edits.
+
+### Glob vs Grep — the call-site discipline (mechanism, not slogan)
+- **Glob matches file PATHS against a pattern** (`**/*.ts`). It returns names and says nothing about contents.
+- **Grep searches file CONTENTS.** "Find every place `processOrder(` is called" — before a rename or signature change — is a **Grep** task: search the function name (and its aliases/derived forms), then Read each match, then Edit.
+- Glob cannot answer "who calls this", even with a perfect pattern. Listing every source file to read them all is the expensive way to do Grep's job.
+- **Built-in tool > Bash equivalent** — content search → `Grep` directly, not `find`+`grep` via Bash. Paths → `Glob`.
+- This one rewards having actually run it once: do a single real Grep-for-call-sites pass in any repo and the distinction stops being declarative.
 
 ### Structured tool errors
 - **Errors return as `tool_result` content, never as raised exceptions.** An exception crashes the loop; a structured error lets the agent recover. Empty-string-on-failure is almost as bad (model assumes success).
@@ -75,17 +81,17 @@ How to use this: Section 1 is the decision rules that answer most questions. Sec
 - **Valid empty result ≠ access failure** — keep them distinguishable.
 
 ### MCP configuration
-- **`.mcp.json` at repo root** = project scope (committed, team-wide). **`~/.claude.json`** = user scope (personal, never committed). Merged at runtime.
+- **`.mcp.json` at repo root** = project scope (committed, team-wide). **`~/.claude.json`** = user scope (personal, never committed). Merged at runtime. **Scope selection rule: who must have the server decides the tier** — team tooling → project; personal/experimental → user.
 - **There is NO `.claude/mcp.json`** — putting config at that path is silently ignored. `.claude/settings.json` carries permissions/hooks; its only MCP keys are `enabledMcpjsonServers`/`disabledMcpjsonServers` approval toggles, never server definitions.
 - **Three transports:** stdio (`command`+`args`, local subprocess, most common), SSE (`type:"sse"`, `url`, `headers`), HTTP (`type:"http"`).
-- **`${ENV_VAR}` expansion** in `env`, `args`, `headers`, `url` — secrets in shell env, never committed. CI: the var must be exported into the actual process.
-- **`list_tools()` is runtime discovery** — deploy a new server, next `list_tools()` picks it up with no client code change.
-- **MCP resources = read-only reference data** (catalogs, policies, DB schemas); **tools = actions.** Static data discovered every session → make it a resource; gives agents visibility without exploratory tool calls.
+- **`${ENV_VAR}` expansion** in `env`, `args`, `headers`, `url` — secrets in shell env, never committed. One committed server definition then carries a different secret per machine. CI: the var must be exported into the actual process.
+- **Discovery is runtime and you verify it:** `list_tools()` at connection time is what makes a newly deployed server visible with no client code change. Tools missing after deploy → list what the client actually discovered BEFORE debugging the server.
+- **MCP resources vs tools — the round-trip mechanism.** Tools = actions; resources = read-only reference data (catalogs, policies, DB schemas). Why resources are faster: **every tool call costs a full model reasoning round-trip** (model emits `tool_use` → client executes → result returns → model runs again); **a resource is read directly by the client with no model turn at all.** Converting exploratory lookups to resource reads removes whole model turns — that, not a faster per-call server response, is where the latency win comes from.
 - FastMCP server = three decorators (`@mcp.tool`, `@mcp.resource`, `@mcp.prompt`) + `mcp.run(transport="stdio")`.
 
 ---
 
-## 4. D3 — Claude Code Configuration & CI (20%)
+## 4. D3 — Claude Code Configuration & Workflows (20%)
 
 ### CLAUDE.md hierarchy (4 tiers, unioned — no single winner)
 1. **User `~/.claude/CLAUDE.md`** — personal defaults, every project, **NOT in VCS** (the classic "new teammate missing instructions" trap).
@@ -111,11 +117,16 @@ How to use this: Section 1 is the decision rules that answer most questions. Sec
 - Narrow the matcher to scope hooks. A hook error must **fail closed**: structured error to the model, log loudly. Silent hook failure = policy quietly evaporates.
 - Defense in depth: prompt → tool description → hook. Bouncer, not a sign on the wall.
 
-### Plan mode & CI
-- **Plan mode:** multi-file/architectural changes, multiple valid approaches, open-ended discovery. Complexity stated in the requirements → pick plan mode upfront; "start direct, switch later" is the anti-pattern. Pair with the **Explore subagent** for verbose discovery.
-- **Direct execution:** single-file bug fix, clear stack trace.
-- **CI = `claude -p "<prompt>"` (`--print`).** Non-interactive, stdout, exits. **`CLAUDE_HEADLESS` env var and `--batch` flag DO NOT EXIST** — they're planted distractors.
+### The three-way workflow decision (plan mode is only one of THREE options)
+- **Direct execution:** single-file bug fix, clear stack trace, low risk, no approval needed.
+- **Plan mode:** ONE plan → approve → execute cycle. Multi-file/architectural changes, competing approaches, needs a single human sign-off before edits. Complexity stated in the requirements → pick plan mode upfront; "start direct, switch later" is the anti-pattern. Pair with the **Explore subagent** for verbose discovery.
+- **Multi-phase workflow:** a SEQUENCE of discrete phases with a checkpoint between stages (explore → plan → implement → review, or a pipeline where each stage gates the next). Choose it when risk is spread across stages, each stage needs its own verification or human approval, or later phases depend on what earlier phases discover.
+- **Selection criteria = task scope + risk level + human-approval requirements.** Read the scenario for where the approvals live: one approval before execution → plan mode; approvals/verifications BETWEEN stages → multi-phase.
+
+### CI & scripted startup
+- **CI = `claude -p "<prompt>"` (`--print`).** Non-interactive, stdout, exits. **`CLAUDE_HEADLESS` env var and `--batch`/`--ci` flags DO NOT EXIST** — they're planted distractors.
 - `--output-format json` + `--json-schema <schema>` = machine-parseable CI output. `--allowedTools "Read,Edit,Bash"` restricts surface.
+- **Fast scripted startup: `--bare`.** Non-interactive invocations pay for auto-discovery of skills, commands, and the full settings hierarchy on every call. When the script already knows the prompt content it needs (e.g. fixed corporate-standards text), `--bare` skips discovery and **`--system-prompt-file` / `--append-system-prompt`** inject that content directly — discovery is what would have produced it, so skipping it only works because you supply it yourself.
 - **One fresh session per PR** — reused sessions contaminate. Independent review instance (generator ≠ reviewer). CLAUDE.md is auto-read by CI-invoked Claude Code — put review criteria there.
 - `max_tokens` = OUTPUT length, not context window.
 
@@ -123,27 +134,36 @@ How to use this: Section 1 is the decision rules that answer most questions. Sec
 
 ## 5. D4 — Prompt Engineering & Structured Output (20%)
 
-### The canonical structured-output pattern
-- **Pydantic model → `model_json_schema()` → register as tool `input_schema` → `tool_choice = {"type":"tool","name":"extract_invoice"}` → model MUST return schema-conformant data.** No regex-on-prose, no "please return only JSON."
-- **Strict kills JSON SYNTAX errors, not SEMANTIC errors.** `{"total": 100, "line_items": [50, 30]}` is schema-valid and arithmetically wrong → validate sums/rules application-side.
+### The JSON strictness spectrum (know all four rungs and the decision rule)
+1. **Prompt-only formatting** ("return only JSON") — no guarantee; fine for human-read output, wrong for pipelines.
+2. **Prefilled assistant turn** — open the assistant's reply with `{` or the expected prefix; the model is now CONTINUING a JSON document, which kills preamble and code fences without any tool machinery. No schema validation.
+3. **Tool use + JSON schema** — Pydantic model → `model_json_schema()` → tool `input_schema`; output schema-conformant by construction.
+4. **Tool use + schema + forced `tool_choice`** — `tool_choice = {"type":"tool","name":"extract_invoice"}`; the model MUST call that tool, so a schema-valid payload arrives every turn.
+- **Decision rule:** how fragile is the consumer? Human eyes → rung 1–2. A parser → 3. A parser plus a hard guarantee that a structured call happens on every turn → 4. Don't buy a stronger rung than the consumer needs — over-engineering is a distractor too.
 
 ### `tool_choice` — four modes, four guarantees
 - **`auto`** (default): may call a tool OR answer in prose.
 - **`any`**: MUST call SOME tool — guarantees *a* call, not the *right* one.
 - **`{"type":"tool","name":X}`**: MUST call THAT tool — the structured-output cheat code.
 - **`none`**: tools registered but uncallable.
+- **Enforced call-ordering pattern:** force a named tool on every call and let the orchestrator layer pick WHICH name each turn gets — ordering becomes programmatic, not a prompt request.
 - `disable_parallel_tool_use: true` = one tool per turn, when ordering matters.
 
+### Strictness limits
+- **Strict kills JSON SYNTAX errors, not SEMANTIC errors.** `{"total": 100, "line_items": [50, 30]}` is schema-valid and arithmetically wrong → validate sums/rules application-side.
+
 ### Hallucination & retry
-- **Required fields the source lacks → model fabricates plausible values to satisfy the schema.** Fix: nullable fields (`Optional[X] = None`) + **"Return null if the value is not directly stated in the source. Do not infer."** — single highest-ROI instruction. Catch hallucination with `source_location` grounding fields.
+- **Required fields the source lacks → model fabricates plausible values to satisfy the schema.** Fix: nullable fields (`Optional[X] = None`) + **"Return null if the value is not directly stated in the source. Do not infer."** — single highest-ROI instruction. Catch hallucination with `source_location` grounding fields. Enum variant: an "other" bucket + free-text detail field beats forcing every case into the nearest label.
 - **Two failure classes, two treatments:** format/schema errors → append original doc + failed output + specific `ValidationError` as a user turn and retry (succeeds within 2–3 tries). Missing-information errors → retries DON'T help; the data isn't in the source.
 - **Hard retry ceiling: 1–2, then human.** Same prompt → same failure. Infinite retry on missing info = budget leak. Fail loud.
+- A `detected_pattern` label on each finding turns outputs into records you can group and count — systematic feedback instead of anecdote.
 - Regex beats the model for deterministic formats (phone, ISO dates). Nested schemas: 2–3 levels fine; past that, split into two extraction calls.
 
-### Few-shot & vague instructions
+### Few-shot, criteria & boundaries
 - **Few-shot (2–3 input/output examples) beats prose specs and temperature.** Locks formats prose can't reach: decimal commas, DD/MM/YYYY, "what NOT to flag."
 - "Be accurate" is not a prompt — it's a wish. Replace with explicit categorical criteria + acceptance checklist + concrete examples.
-- False-positive flood (security review flags 60% of PRs): disable the category temporarily + explicit criteria with reportable-vs-acceptable examples. Self-reported confidence thresholds don't fix it.
+- **Criteria run BOTH directions: inclusion AND exclusion.** A prompt that says what to find but not what to skip gets findings in categories where the model is unreliable. Name the out-of-scope classes ("do not report X, Y") with examples of acceptable instances.
+- False-positive flood (security review flags 60% of PRs): disable the category temporarily + rewrite its criteria with reportable-vs-acceptable examples. Self-reported confidence thresholds don't fix a broken category.
 - Many rule sets in one pass → attention dilution → split passes or add a deterministic validation layer.
 
 ### Batches API
@@ -166,7 +186,7 @@ How to use this: Section 1 is the decision rules that answer most questions. Sec
 - **Summarize resolved turns** into one-line narrative; keep verbatim history ONLY for the active issue. Summarization loses precise transactional details — that's why the case-facts block exists.
 - **Prune verbose tool outputs application-side, before appending** (PostToolUse pattern). Tool returned 40 fields, you used 5 → strip 35. The model can't do this for you.
 - **`/compact` = fallback, not a strategy.**
-- Large codebases: start broad (CLAUDE.md/README) then pinpoint; Grep for content, Glob for paths; Read before Edit; `.scratchpad.md` of findings instead of re-reading source; delegate verbose discovery to an Explore subagent.
+- Large codebases: start broad (CLAUDE.md/README) then pinpoint; **Grep for content, Glob for paths** (see §3 for the call-site discipline); Read before Edit; `.scratchpad.md` of findings instead of re-reading source; delegate verbose discovery to an Explore subagent.
 - 155K tokens of raw content choking synthesis → **fix at the SOURCE: upstream agents return structured summaries**, don't trim downstream.
 
 ### Prompt caching
@@ -196,23 +216,20 @@ How to use this: Section 1 is the decision rules that answer most questions. Sec
 
 ---
 
-## 7. YOUR Personal Miss List (read twice — these cost you points)
+## 7. Error Log — the confusions worth pre-empting
 
-### From the diagnostic (3 misses)
-1. **Q1 — You picked "enhance the system prompt"; correct was "programmatic prerequisite gate."** 12% of cases skipping `get_customer` before `lookup_order` → deterministic gate, not prompt, not few-shot, not a routing classifier.
-2. **Q16 — You picked "add 'you must return valid JSON'"; correct was "tool use with JSON schema."** "Eliminate syntax errors" = by-construction mechanism. Prompt self-checks reduce but never eliminate.
-3. **Q19 — You picked "/compact each conversation"; correct was "pinned case-facts block."** Summarization CAUSED the precision loss. Verbatim facts pinned top-of-prompt, not better compression.
-4. **Q20 — You picked "always retain human review (regulatory)"; correct was "aggregate accuracy masks weak segments — stratify."** When asked what's wrong with a metric, answer the measurement flaw, not a policy absolute ("always"/"regardless").
+One candidate's real miss pattern, kept because every miss had the same shape (the honesty caveat: this is a single candidate's log, not a statistical sample). When torn between two answers, ask: **"which one makes the failure impossible rather than less likely?"** Pick that one.
 
-### From the 60-question mock (5 misses)
-1. **Fixed structure → prompt chaining, not agents.** Known, defined aspects (security/style/perf review) → sequential focused passes with dedicated criteria each. Multi-agent decomposition is for *unknown/dynamic* structure.
-2. **Built-in tool > Bash.** Content search → `Grep` directly, not `find`+`grep` via Bash. Paths → `Glob`.
-3. **Edit anchor not unique → Read + Write the whole file.** Don't chain fragile anchored Edits.
-4. **Interview pattern** for unfamiliar legacy systems: have Claude question YOU before designing anything.
-5. **Skill `allowed-tools` gates built-ins only** — MCP access is inherited from the parent session. No `allowed-servers` field exists.
-
-### The pattern in your misses
-Every single miss was the same shape: **you picked the plausible-but-softer option over the structural mechanism.** When torn between two answers, ask: "which one makes the failure impossible rather than less likely?" Pick that one.
+1. **Required step skipped 12% of the time** → programmatic prerequisite gate, not a stronger system prompt, not few-shot, not a routing classifier.
+2. **"Eliminate JSON syntax errors"** → tool use with JSON schema. Prompt self-checks reduce but never eliminate.
+3. **Precision decay across long conversations** → pinned case-facts block. `/compact` and better summarization are the cause refined, not the cure.
+4. **"What is wrong with this 97%-accurate pipeline?"** → the aggregate masks weak segments; stratify. Don't reach for a policy absolute ("always retain human review") when the question asks about a measurement flaw.
+5. **Fixed review structure (security/style/perf)** → prompt chaining, not multi-agent. Dynamic decomposition is for *unknown* structure.
+6. **Content search** → built-in `Grep`, not `find`+`grep` via Bash. Paths → `Glob`.
+7. **Edit anchor not unique** → Read + Write the whole file; don't chain fragile anchored Edits.
+8. **Unfamiliar legacy system** → interview pattern: have Claude question YOU before designing.
+9. **Skill `allowed-tools`** gates built-ins only — MCP access is inherited from the parent session; no `allowed-servers` field exists.
+10. **The two traps that score 0% are silent third options:** "multi-phase workflow" alongside plan mode (§4), and "prefilled responses" on the JSON strictness spectrum (§5). Options you never drilled are invisible even when correct.
 
 ---
 
@@ -232,18 +249,17 @@ Every single miss was the same shape: **you picked the plausible-but-softer opti
 - Resuming a session whose tool results went stale (→ fresh session + injected summary).
 - `CLAUDE_HEADLESS`, `--batch`, `--ci` flags (don't exist).
 - "Always"/"regardless" policy answers when the question asks about a measurement flaw.
+- Glob patterns to answer a content question ("who calls this"); prompt-only JSON for a pipeline that needs a guarantee.
 
 ---
 
 ## 9. Exam-Day Logistics & Tactics
 
 - **Pearson VUE**, online proctored or test center. Government ID matching registration name **exactly**. Clean room, no second monitor, no phone, no notes.
-- 60 items in 120 min = **~2 min/question**. Some are multiple-response ("select TWO/THREE") — read the stem carefully.
+- 60 items in 120 min = **~2 min/question**. All single-answer, four options, one correct — no multi-select, so never hunt for a second defensible option.
 - **Answer EVERYTHING — no guessing penalty.** Flag unsure ones, finish the pass, return with remaining time.
 - Results in ~2 business days with per-domain breakdown.
-- $125 fee. Retakes allowed with a 14-day wait (but you won't need it).
+- $125 fee. Retakes allowed with a 14-day wait.
 - When course material and Anthropic docs disagree, Anthropic wins.
 - Read each scenario, recognize which of the 6 archetypes it is (support agent, code gen, multi-agent research, dev productivity, CI, structured extraction) → that tells you the domain emphasis.
 - Distractors are *plausible-but-wrong*: usually the prompt-only or over-engineered alternative to the correct mechanism.
-
-**You've scored 85% diagnostic → 94% domain drills → 92% full mock. The trend is your friend. Go get it.**

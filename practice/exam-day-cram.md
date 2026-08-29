@@ -1,7 +1,7 @@
 # CCAR-F Exam Day Cram Sheet
 
 **Claude Certified Architect – Foundations (CCAR-F)**
-60 items (some multiple-response — read "select N") · 120 min · Pass 720/1000 · Pearson VUE
+60 items (all single-answer — four options, one correct; no multi-select) · 120 min · Pass 720/1000 · Pearson VUE
 Weights: **D1 27% · D3 20% · D4 20% · D2 18% · D5 15%**
 
 ---
