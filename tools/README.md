@@ -71,3 +71,26 @@ A. option text · B. option text · C. option text        (inline, or one per li
 
 If you write items in a different format, the script will report "no items
 parsed" and exit non-zero rather than silently passing an empty set.
+
+---
+
+# check-nearclone.py
+
+Checks that a new set of practice items is not a near-copy of items you have
+already written or sat — stems are compared by word-overlap similarity, and
+anything at or above the threshold is reported for a rewrite.
+
+This tool is **for the guide's author, not readers**: its `--against` corpus is
+the author's private bank of sat papers and drills, which is not part of this
+repository. It ships here so the build process is documented and reproducible
+by anyone maintaining their own bank. Readers checking their own items only
+need `check-item-quality.py`.
+
+```
+python3 tools/check-nearclone.py NEW-BANK.json [NEW-BANK-2.json ...] \
+    --against OLD-PAPER.md [OLD-PAPER-2.md ...] [--threshold 0.6]
+```
+
+Banks may be JSON files (lists of objects with a `"stem"` field) or papers in
+the `## Q<n>` markdown format. Exits `1` if any new stem meets or exceeds the
+similarity threshold against any corpus stem.

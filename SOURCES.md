@@ -1,7 +1,7 @@
 # Sources — Claude Certified Architect – Foundations (CCAR-F)
 
 ## Official exam guide
-- Version: 1.0, effective July 2026
+- Version: 1.0 (July 2026 edition)
 - Local path: `_exam-guides/ccar-f/` — not committed, see the restructure plan §4
 - What this guide takes from it: the five domain names and weights, and the
   objective inventory once the guide is written. All objective descriptions
@@ -23,13 +23,15 @@ that covers the captured Academy material, stated in the restructure plan §7a.
 - [hamzafarooq/claude-certified-architect](https://github.com/hamzafarooq/claude-certified-architect) —
   MIT © 2025 Hamza Farooq. Supplied 20 of the 60 items in the private
   reference mock at `_external/derived/ccar-f-mock/`.
-- [utkarsh1agarwal/claude-architect-exam-guide](https://github.com/utkarsh1agarwal/claude-architect-exam-guide) —
+- Repo `utkarsh1agarwal/claude-architect-exam-guide`, hosted at
+  https://github.com/utkarsh1agarwal/claude-architect-exam-guide —
   MIT © 2026 contributors. Supplied 23 of the 60 items in the private
   reference mock.
 - [timothywarner-org/claude-architect](https://github.com/timothywarner-org/claude-architect) —
   MIT © 2026 Timothy Warner Organization. Read for reference; nothing from it
   is currently used in any local artefact.
-- [OlivierAlter/Claude-Certified-Architect-Foundations-Certification-Exam](https://github.com/OlivierAlter/Claude-Certified-Architect-Foundations-Certification-Exam) —
+- Repo `OlivierAlter/Claude-Certified-Architect-Foundations-Certification-Exam`,
+  hosted at https://github.com/OlivierAlter/Claude-Certified-Architect-Foundations-Certification-Exam —
   **no licence, all rights reserved.** Supplied 17 of the 60 items in the
   private reference mock. Also the source of two files that were found
   reproducing it near-verbatim and were quarantined rather than published:

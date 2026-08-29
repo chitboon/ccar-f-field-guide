@@ -37,7 +37,7 @@ How to use this: Section 1 is the decision rules that answer most questions. Sec
 ### Multi-agent (hub-and-spoke is the ONLY topology tested)
 - Coordinator owns: decomposition, dynamic subagent selection, error handling, synthesis. **Subagents never call peers directly.**
 - **Subagents get FRESH context** — no inheritance, no shared memory, no CLAUDE.md, no conversation history. Restate everything in the invocation prompt. Context isolation is structural, not a prompt instruction — subagent tool blocks never appear in the coordinator's message array.
-- All subagents succeed but output is wrong/incomplete → **the coordinator's decomposition/spec is the defect.** Subagents executed their narrow assignments correctly; the problem is what they were assigned.
+- All subagents succeed but output is wrong/incomplete → **the coordinator's decomposition/spec is the defect.** Subagents executed their narrow assignments as specified; the defect lies in what they were told to do.
 - Spawning: the **`Task` tool** — coordinator's `allowedTools` **must include `"Task"`**; leaf subagents' `allowedTools` deliberately exclude `Task` (prevents recursion).
 - **Parallel subagents = N Task calls in ONE assistant response** — not multiple turns.
 - Structured handoff, not prose: each subagent returns `{claim, evidence, source, confidence}`. **Never daisy-chain full conversation logs** between subagents (token cost scales superlinearly, signal collapses).
@@ -60,7 +60,7 @@ How to use this: Section 1 is the decision rules that answer most questions. Sec
 ### Tool descriptions
 - **The tool description is the contract, not the name.** The model selects tools by description text — the single biggest lever for tool-use accuracy. Write it like onboarding a junior engineer: purpose, when to call, when NOT to call, input formats with examples, success/failure shapes.
 - **Tool misselection → fix descriptions FIRST** (inputs, examples, "use this vs. that"). Then rename. Merge/split last.
-- Second lever: split generic tools into purpose-specific ones (`analyze_document` → `extract_data_points` / `summarize_content` / `verify_claim_against_source`).
+- Second lever: split generic tools into purpose-specific ones (`analyze_document` → `pull_line_items` / `flag_anomalies` / `rate_document_risk`).
 - **~4–5 tools per agent max.** Selection accuracy degrades sharply past that. General-purpose tools in specialized agents = scope creep → replace with capability-limited tools. 18 tools "for flexibility" = wrong.
 - High-frequency simple need → one narrow scoped tool locally; complex cases → coordinator.
 - Glob finds files (paths), Grep finds text (content). **Built-in tool > Bash equivalent** — content search → `Grep` directly, not `find`+`grep` via Bash.
@@ -76,7 +76,7 @@ How to use this: Section 1 is the decision rules that answer most questions. Sec
 
 ### MCP configuration
 - **`.mcp.json` at repo root** = project scope (committed, team-wide). **`~/.claude.json`** = user scope (personal, never committed). Merged at runtime.
-- **There is NO `.claude/mcp.json`** — that path is silently ignored. `.claude/settings.json` holds permissions/hooks; its only MCP keys are `enabledMcpjsonServers`/`disabledMcpjsonServers` approval toggles, never server definitions.
+- **There is NO `.claude/mcp.json`** — putting config at that path is silently ignored. `.claude/settings.json` carries permissions/hooks; its only MCP keys are `enabledMcpjsonServers`/`disabledMcpjsonServers` approval toggles, never server definitions.
 - **Three transports:** stdio (`command`+`args`, local subprocess, most common), SSE (`type:"sse"`, `url`, `headers`), HTTP (`type:"http"`).
 - **`${ENV_VAR}` expansion** in `env`, `args`, `headers`, `url` — secrets in shell env, never committed. CI: the var must be exported into the actual process.
 - **`list_tools()` is runtime discovery** — deploy a new server, next `list_tools()` picks it up with no client code change.
