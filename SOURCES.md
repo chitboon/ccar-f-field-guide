@@ -9,9 +9,25 @@
   from the exam guide appears in this repository.
 
 ## Anthropic Academy courses
-Not yet determined — the guide has not been written. Will be filled in as the
-guide draws on specific courses, following the pattern in
-[ccao-f-field-guide/SOURCES.md](https://github.com/chitboon/ccao-f-field-guide/blob/main/SOURCES.md).
+
+The following Academy courses informed the guide's concept coverage and
+the domain-drill and mock item authoring. Objective descriptions are
+paraphrased, never the published wording.
+
+- `claude-code-101/` — Subagents, Context management, the
+  explore→plan→code→commit workflow, MCP, Skills, Hooks, CLAUDE.md,
+  Code review
+- `introduction-to-subagents/` — task delegation, context isolation,
+  coordinator responsibilities
+- `building-with-claude-api/` — Agents and tools, Agents and workflows,
+  Workflows vs agents, Routing/Parallelization/Chaining, Tool use, Tool
+  schemas, Prompt engineering, Structured data, System prompts, Temperature,
+  Evaluation workflows
+- `introduction-to-model-context-protocol/` — MCP fundamentals, transports,
+  sampling, roots, notifications
+- `mcp-advanced-topics/` — advanced MCP patterns
+- `introduction-to-agent-skills/` — skill frontmatter (`context: fork`,
+  `allowed-tools`, `argument-hint`)
 
 ## Third-party material consulted
 
