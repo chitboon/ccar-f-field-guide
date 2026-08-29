@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CCAR-F Field Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,500;6..72,600&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+  :root{
+    --ground:#FAF9F6; --surface:#FFFFFF; --surface-2:#F1F0EB; --sunk:#EDECE6;
+    --ink:#1C2028; --ink-mid:#4A515C; --ink-soft:#6E7681;
+    --accent:#1F6F8B;
+    --d1:#1F6F8B; --d2:#8A5A2B; --d3:#6B3A7A; --d4:#2C6B4F; --d5:#9C4A1A;
+    --good:#2C6B4F; --good-bg:#EAF1EC; --warn:#9C4A1A; --warn-bg:#F8EDE6;
+    --rule:#DEDCD4; --rule-soft:#E9E7E0;
+    --serif:'Newsreader',Georgia,serif;
+    --sans:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+    --mono:'IBM Plex Mono',ui-monospace,Menlo,monospace;
+  }
+  @media(prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --ground:#14171C; --surface:#1B1F26; --surface-2:#22272F; --sunk:#191D23;
+      --ink:#E8EAED; --ink-mid:#B0B7C0; --ink-soft:#868D96;
+      --accent:#6FBDD6;
+      --d1:#6FBDD6; --d2:#D3A263; --d3:#B98DC7; --d4:#6FB894; --d5:#DA9463;
+      --good:#6FB894; --good-bg:#182420; --warn:#DA9463; --warn-bg:#2A1E16;
+      --rule:#2B313A; --rule-soft:#232931;
+    }
+  }
+  :root[data-theme="dark"]{
+    --ground:#14171C; --surface:#1B1F26; --surface-2:#22272F; --sunk:#191D23;
+    --ink:#E8EAED; --ink-mid:#B0B7C0; --ink-soft:#868D96;
+    --accent:#6FBDD6;
+    --d1:#6FBDD6; --d2:#D3A263; --d3:#B98DC7; --d4:#6FB894; --d5:#DA9463;
+    --good:#6FB894; --good-bg:#182420; --warn:#DA9463; --warn-bg:#2A1E16;
+    --rule:#2B313A; --rule-soft:#232931;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--ground);color:var(--ink);font-family:var(--sans);
+    font-size:16.5px;line-height:1.62;-webkit-text-size-adjust:100%}
+  .wrap{max-width:42rem;margin:0 auto;padding:2rem 1.15rem 5rem}
+  @media(min-width:680px){body{font-size:17px}.wrap{padding:3.5rem 2rem 6rem}}
+
+  .kicker{font-family:var(--mono);font-size:.66rem;letter-spacing:.15em;
+    text-transform:uppercase;color:var(--accent);margin:0 0 .55rem}
+  h1{font-family:var(--serif);font-weight:600;font-size:2.35rem;line-height:1.08;
+    letter-spacing:-.02em;margin:0 0 .7rem;text-wrap:balance}
+  @media(min-width:680px){h1{font-size:3rem}}
+  .standfirst{font-size:1.08rem;color:var(--ink-mid);margin:0}
+  .masthead{border-bottom:2px solid var(--ink);padding-bottom:1.7rem;margin-bottom:1.6rem}
+
+  h2{font-family:var(--serif);font-weight:600;font-size:1.6rem;line-height:1.15;
+    letter-spacing:-.014em;margin:0 0 .3rem;text-wrap:balance}
+  h3{font-family:var(--sans);font-weight:600;font-size:1.02rem;
+    margin:0 0 .35rem;letter-spacing:-.004em}
+  section{margin:3rem 0 0;padding-top:1.7rem;border-top:1px solid var(--rule)}
+  .lede{color:var(--ink-mid);margin:.55rem 0 1.4rem}
+  p{margin:0 0 1rem}
+  a{color:var(--accent)}
+
+  .callout{background:var(--surface);border:1px solid var(--rule);
+    border-left:4px solid var(--accent);border-radius:2px;padding:1.05rem 1.1rem;margin:1.5rem 0}
+  .callout p:last-child{margin-bottom:0}
+  .callout .kicker{margin-bottom:.4rem}
+  .callout.warn{border-left-color:var(--warn);background:var(--warn-bg)}
+  .callout.warn .kicker{color:var(--warn)}
+
+  .dgrid{display:flex;flex-direction:column;gap:.9rem;margin:1.3rem 0}
+  .dcard{background:var(--surface);border:1px solid var(--rule);border-radius:3px;
+    padding:1rem 1.05rem;border-top:3px solid var(--c)}
+  .dcard .dname{font-family:var(--serif);font-weight:600;font-size:1.22rem;
+    margin:0 0 .15rem;color:var(--c)}
+  .dcard .dverb{font-family:var(--mono);font-size:.66rem;letter-spacing:.12em;
+    text-transform:uppercase;color:var(--ink-soft);margin:0 0 .5rem}
+  .dcard p{margin:0 0 .6rem;font-size:.96rem}
+  .dcard .ditems{font-family:var(--mono);font-size:.7rem;background:var(--surface-2);
+    border:1px solid var(--rule-soft);border-radius:2px;padding:.2rem .45rem;
+    color:var(--ink-mid);display:inline-block;margin-top:.3rem}
+
+  .tw{overflow-x:auto;-webkit-overflow-scrolling:touch;margin:0 0 .6rem}
+  table{border-collapse:collapse;width:100%;font-size:.9rem;min-width:20rem}
+  th,td{text-align:left;padding:.5rem .6rem;border-bottom:1px solid var(--rule-soft);vertical-align:top}
+  th{font-family:var(--mono);font-size:.62rem;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-soft);font-weight:500;border-bottom:1px solid var(--rule)}
+  td:first-child{font-weight:500}
+  tr:last-child td{border-bottom:none}
+  .num{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .flag{font-family:var(--mono);font-size:.68rem;color:var(--warn)}
+
+  details{background:var(--surface);border:1px solid var(--rule);border-radius:3px;
+    padding:.9rem 1rem;margin:0 0 .7rem}
+  details[open]{background:var(--surface-2)}
+  summary{cursor:pointer;font-weight:500;list-style:none;font-size:.98rem}
+  summary::-webkit-details-marker{display:none}
+  summary::before{content:"▸ ";color:var(--accent);font-weight:600}
+  details[open] summary::before{content:"▾ "}
+  summary:focus-visible{outline:2px solid var(--accent);outline-offset:3px;border-radius:2px}
+  .opts{list-style:upper-alpha;margin:.8rem 0 0;padding-left:1.5rem;font-size:.94rem}
+  .opts li{margin-bottom:.3rem}
+  .ans{margin:.9rem 0 0;padding-top:.8rem;border-top:1px solid var(--rule);font-size:.94rem}
+  .ans strong{color:var(--good)}
+
+  ul.plain{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:.55rem}
+  ul.plain li{position:relative;padding-left:1.55rem;font-size:.96rem}
+  ul.plain li::before{content:"";position:absolute;left:.25rem;top:.58rem;
+    width:.4rem;height:.4rem;border-radius:50%;background:var(--accent)}
+
+  code{font-family:var(--mono);font-size:.86em;background:var(--sunk);
+    padding:.1em .35em;border-radius:2px}
+  .foot{margin-top:3rem;padding-top:1.6rem;border-top:2px solid var(--ink);
+    font-size:.93rem;color:var(--ink-soft)}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="masthead">
+  <p class="kicker">Claude Certified Architect · Foundations · CCAR-F</p>
+  <h1>Field Guide</h1>
+  <p class="standfirst">Built backwards from a passing sitting at 892/1000 (cut 720). Every item is single-answer, four options, one correct — no multi-select. Distractors are closely spaced: the plausible prompt-level or over-engineered alternative to the correct structural mechanism. This guide tells you which mechanisms actually get tested, where confident preparation still leaves you exposed, and the one mental habit that answers most items.</p>
+</header>
+
+<div class="callout">
+  <p class="kicker">The one rule that answers 70% of items</p>
+  <p><strong>Deterministic beats probabilistic.</strong> When torn between two options, ask: which one makes the failure impossible rather than less likely? Hooks and gates beat prompt instructions. Schemas beat "please return valid JSON." Pinned fact blocks beat better summarization. The plausible-but-softer option is the distractor's home address.</p>
+</div>
+
+<section>
+  <p class="kicker">Verified</p>
+  <h2>The facts</h2>
+  <div class="tw"><table>
+    <tbody>
+      <tr><td>Items</td><td class="num">60, single-answer (four options, one correct)</td></tr>
+      <tr><td>Time</td><td class="num">120 minutes (~2:00 per item)</td></tr>
+      <tr><td>Passing score</td><td class="num">720 on a 100–1000 scale</td></tr>
+      <tr><td>Fee</td><td class="num">$125 USD</td></tr>
+      <tr><td>Validity</td><td class="num">12 months</td></tr>
+      <tr><td>Format</td><td class="num">Proctored, online or at a test centre</td></tr>
+    </tbody>
+  </table></div>
+  <p style="font-size:.94rem;color:var(--ink-mid);margin:.9rem 0 0">Every item is single-answer, four options, one correct. Stems are long and scenario-based, typically three to five sentences with concrete details — a named company, a specific number, an actual error payload. Distractors are closely spaced: usually the plausible prompt-level alternative to the correct structural mechanism.</p>
+</section>
+
+<section>
+  <p class="kicker">Weighting</p>
+  <h2>Five domains, sixty items</h2>
+  <p class="lede">D1 + D3 + D4 are two-thirds of the exam. D5's nine items concentrate on a few heavily-tested judgements (escalation triggers, provenance, lost-in-the-middle), so each one is cheap to secure.</p>
+
+  <div class="dgrid">
+    <div class="dcard" style="--c:var(--d1)">
+      <p class="dname">D1 · Agentic Architecture &amp; Orchestration</p>
+      <p class="dverb">27% · ~16 items</p>
+      <p>The heaviest domain. Most items reduce to one question: where does control live — in the model's prose, or in the structure around it? The agent is the loop, not the model. Hub-and-spoke is the only tested topology.</p>
+      <span class="ditems">stop_reason · subagent isolation · hooks · decomposition · sessions</span>
+    </div>
+    <div class="dcard" style="--c:var(--d2)">
+      <p class="dname">D2 · Tool Design &amp; MCP Integration</p>
+      <p class="dverb">18% · ~11 items</p>
+      <p>Tool descriptions are the model's only source of constraint signals. Structured error codes enable targeted recovery. Removing a tool from the registry is the only deterministic prevention. MCP scope follows task need.</p>
+      <span class="ditems">tool descriptions · error signals · tool scoping · MCP scope · built-in tools</span>
+    </div>
+    <div class="dcard" style="--c:var(--d3)">
+      <p class="dname">D3 · Claude Code Configuration &amp; Workflows</p>
+      <p class="dverb">20% · ~12 items</p>
+      <p>Project-level CLAUDE.md travels with the repo. Path-scoped rules apply conventions by file pattern. Plan mode is for architectural decisions before execution. CI isolation comes from fresh containers, not branch comparison.</p>
+      <span class="ditems">config scope · commands/skills · path rules · plan mode · iterative refinement · CI/CD</span>
+    </div>
+    <div class="dcard" style="--c:var(--d4)">
+      <p class="dname">D4 · Prompt Engineering &amp; Structured Output</p>
+      <p class="dverb">20% · ~12 items</p>
+      <p>Replace vague qualifiers with explicit categorical criteria. Few-shot examples beat more rules. Nullable fields prevent fabrication. Batch API for latency-tolerant jobs, sync for interactive gates. Independent review beats self-review.</p>
+      <span class="ditems">explicit criteria · few-shot · schema design · retry/validation · batch vs sync · review independence</span>
+    </div>
+    <div class="dcard" style="--c:var(--d5)">
+      <p class="dname">D5 · Context Management &amp; Reliability</p>
+      <p class="dverb">15% · ~9 items</p>
+      <p>Structured facts survive summarization; prose decays. Ask clarifying questions rather than guessing. Errors propagate as errors, never empty-success. Search before asking. Aggregate figures hide weak segments.</p>
+      <span class="ditems">structured facts · escalation · error propagation · codebase exploration · stratified analysis · provenance</span>
+    </div>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">The pattern</p>
+  <h2>Deterministic beats probabilistic — everywhere</h2>
+  <p class="lede">This single principle connects most items across all five domains. The exam consistently tests whether you can distinguish structural enforcement from prompt-level suggestion.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>Scenario</th><th>Probabilistic (distractor)</th><th>Deterministic (correct)</th></tr></thead>
+    <tbody>
+      <tr><td>Prevent a tool call</td><td>System-prompt warning</td><td>Remove tool from registry / hook gate</td></tr>
+      <tr><td>Enforce a required step</td><td>"Always do X" instruction</td><td>PreToolUse hook with approval flag</td></tr>
+      <tr><td>Ensure JSON output</td><td>"Return valid JSON" prompt</td><td>Tool use + schema + forced tool_choice</td></tr>
+      <tr><td>Preserve exact figures</td><td>Better summarization</td><td>Pinned facts block, verbatim every turn</td></tr>
+      <tr><td>Prevent fabrication</td><td>"Do not hallucinate" instruction</td><td>Nullable field with null-when-unstated rule</td></tr>
+      <tr><td>Verify accuracy</td><td>Self-assessment by same model</td><td>Independent review instance</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout warn">
+    <p class="kicker">The distractor's home address</p>
+    <p style="margin-bottom:0">The plausible-but-softer option is almost always the wrong answer. More prompt examples, lower temperature, "be more critical" instructions, and self-review are all probabilistic controls that can be talked past. If the scenario involves money, ordering, compliance, or safety — the answer is structural.</p>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">Where preparation fails</p>
+  <h2>Seven gaps from a real sitting</h2>
+  <p class="lede">These seven objectives scored below 100% on the exam behind this guide. In each case, the cause was the same: recognition outran understanding — the correct answer was picked by pattern match, not by deriving the mechanism.</p>
+
+  <h3 style="margin-top:1.7rem">Gap 1 · Multi-phase workflow as a third option (0%)</h3>
+  <p>Training that only ever contrasts plan mode with direct execution leaves "multi-phase workflow" as an unlabeled middle zone. The exam tests all three. A multi-phase workflow is a sequence of discrete phases (explore → plan → implement → review), each with its own checkpoint or approval gate, versus plan mode's single plan-then-execute cycle.</p>
+
+  <h3 style="margin-top:1.7rem">Gap 2 · Prefilled responses as structured output (0%)</h3>
+  <p>The structured-output strictness spectrum has three rungs: prompt-only formatting (weakest), prefilled assistant turn with opening brace (constrains continuation), and tool use + JSON schema + forced tool_choice (strictest). Prefilling was never covered by any session bank. Match the rung to the consumer's fragility.</p>
+
+  <h3 style="margin-top:1.7rem">Gap 3 · MCP scope selection and discovery verification (50%)</h3>
+  <p>Three decisions arrive as one: where the server definition lives, where the secret lives, and how you confirm the tools are actually there. Shared server → project scope. Personal secret → environment expansion, never committed. Missing tools → verify discovery before debugging the server.</p>
+
+  <h3 style="margin-top:1.7rem">Gap 4 · Inclusion and exclusion criteria (50%)</h3>
+  <p>A prompt that says what to find, with options that only strengthen the positive instruction. The flood comes from the missing negative boundary. Exclusion criteria name the categories not to report — they are how you stop the model doing work it shouldn't.</p>
+
+  <h3 style="margin-top:1.7rem">Gap 5 · Glob vs Grep for call-site enumeration (60%)</h3>
+  <p>Glob matches file paths/names. Grep searches file contents. A rename or signature-change task needs Grep on the function name to enumerate call sites, then Read on each match. Glob alone cannot answer "who calls this." Run it once by hand — the distinction sticks the first time, not the tenth time you read it.</p>
+
+  <h3 style="margin-top:1.7rem">Gap 6 · CLI startup performance: --bare (100% objective, missed sub-flag)</h3>
+  <p>A 100% objective-level score does not guarantee sub-flag coverage. <code>--bare</code> skips skill/command/settings auto-discovery for faster scripted calls. <code>--system-prompt-file</code> injects required prompt content directly. When the script already knows the content, <code>--bare</code> skips discovery and the file flag supplies the text.</p>
+
+  <h3 style="margin-top:1.7rem">Gap 7 · Recognition vs. mechanism understanding</h3>
+  <p>The MCP resources-vs-tools objective scored 100%, but the correct answer was chosen by pattern match, not derived from the mechanism. The actual reason resources are faster: each tool call costs a full model reasoning round-trip; a resource is read directly by the client with no model turn required. Removing exploratory tool calls removes turns, and the turns are the latency.</p>
+
+  <div class="callout">
+    <p class="kicker">The calibration signal</p>
+    <p style="margin-bottom:0">A correct multiple-choice answer is not proof of mechanism understanding. After each item, ask: could I explain <em>why</em> this answer is correct to someone who picked the wrong one? If the answer is "it just seemed right," that's recognition, not mechanism. The gap between "concept drill feels easy" and "mock feels hard" is real signal — it means you recognize mechanisms but cannot yet select them under scenario pressure.</p>
+  </div>
+</section>
+
+<section>
+  <p class="kicker">The traps</p>
+  <h2>Fourteen judgement patterns</h2>
+  <p class="lede">Each trap is the shape of a question rather than a fact: how it presents, a worked example, and the discrimination that resolves it. Read the trap, cover the resolution, work the example, then check yourself.</p>
+
+  <h3 style="margin-top:1.7rem">Seed patterns</h3>
+
+  <details>
+    <summary>1. stop_reason timing — the model sounds finished</summary>
+    <p>The model's text sounds finished, and an option treats that as the stop signal — or a loop condition keys on the wrong <code>stop_reason</code>.</p>
+    <p class="ans"><strong>Resolution:</strong> <code>text</code> and <code>tool_use</code> blocks coexist in one response; prose is never a completion signal. The loop's contract is <code>stop_reason</code>. Branch on it: <code>tool_use</code> → execute, <code>end_turn</code> → stop.</p>
+  </details>
+
+  <details>
+    <summary>2. Config-scope inverse framing — "works on my machine"</summary>
+    <p>The scenario is stated backwards — "works on my machine, teammate doesn't have it" — and the options make you convert between scopes under pressure.</p>
+    <p class="ans"><strong>Resolution:</strong> Team standards belong at project scope because that is the tier version control distributes. User scope is personal by design — it never travels with the repo. Whoever must have the rule determines the tier.</p>
+  </details>
+
+  <details>
+    <summary>3. Tool-scoping vs topology attribution — who's at fault?</summary>
+    <p>An agent misuses a tool, and the options split between "change the tool surface" and "change the agent structure." The scenario's numbers tell you which.</p>
+    <p class="ans"><strong>Resolution:</strong> Selection accuracy degrades as tool count grows. A general-purpose tool inside a specialized agent is scope creep — the fix is a scoped tool surface. If the misuse is <em>available to happen</em>, scope it out before you supervise it.</p>
+  </details>
+
+  <details>
+    <summary>4. Aggregate-vs-stratified review — the impressive metric</summary>
+    <p>An impressive aggregate metric, and options that accept it. The correct answer attacks the measurement.</p>
+    <p class="ans"><strong>Resolution:</strong> 96% overall can be 99% on typed forms and 78% on handwritten ones. Stratify by document type and field before deciding. Self-reported confidence is uncalibrated — a routing key, not truth.</p>
+  </details>
+
+  <details>
+    <summary>5. Schema-honesty — nullable fields prevent fabrication</summary>
+    <p>A required field the source sometimes lacks. The model does not fail loudly — it fabricates a plausible value to satisfy the schema.</p>
+    <p class="ans"><strong>Resolution:</strong> A required non-nullable field forces the model to choose between fabricating and failing schema validation. Nullable fields plus an explicit null-when-unstated rule give the model an honest exit.</p>
+  </details>
+
+  <details>
+    <summary>6. Batch-vs-sync split — the ~50% discount trap</summary>
+    <p>The ~50% discount tempts a "batch everything" answer; the decider is whether anything blocks on the result.</p>
+    <p class="ans"><strong>Resolution:</strong> Batches trade latency for cost: up to a 24-hour window and no SLA. The more a caller blocks on the result, the less suitable the batch window. "Typically finishes in about two hours" is not a guarantee.</p>
+  </details>
+
+  <details>
+    <summary>7. Context preservation under pressure — facts decay</summary>
+    <p>Precise facts decay across a long conversation, and options offer better compression. Compression is the cause, not the cure.</p>
+    <p class="ans"><strong>Resolution:</strong> Summarization is precisely what rounds "$1,204.60" into "about $1,200 from mid-March." Facts that must survive are pinned verbatim, every turn, outside whatever gets summarized. A bigger window postpones the decay; it does not prevent it.</p>
+  </details>
+
+  <h3 style="margin-top:1.7rem">Post-exam gap patterns</h3>
+
+  <details>
+    <summary>8. The three-way workflow decision — plan mode, direct, or multi-phase?</summary>
+    <p>The options offer three patterns and the scenario quietly demands the third. Training that only contrasted plan mode with direct execution leaves "multi-phase workflow" as an unlabeled middle zone.</p>
+    <p class="ans"><strong>Resolution:</strong> Plan mode is a single plan→approve→execute cycle. Multi-phase is a sequence of discrete phases, each gating the next. The selection criteria are task scope, risk level, and human-approval requirements — read the scenario for where the approvals live.</p>
+  </details>
+
+  <details>
+    <summary>9. Choosing the structured-output rung — match strictness to consumer</summary>
+    <p>"The output must be JSON" with options spanning the whole strictness spectrum. Picking too weak breaks the pipeline; picking the strongest "to be safe" can be the over-engineered distractor.</p>
+    <p class="ans"><strong>Resolution:</strong> Prefilling with <code>{</code> constrains continuation without tool machinery. Tool use + schema + forced tool_choice is the strictest rung. Match the rung to the consumer's fragility — a human reader needs less than a strict parser.</p>
+  </details>
+
+  <details>
+    <summary>10. MCP scope, secrets, and discovery — three decisions as one</summary>
+    <p>Where the server definition lives, where the secret lives, and how you confirm the tools are actually there — usually drilled separately, arriving as one scenario.</p>
+    <p class="ans"><strong>Resolution:</strong> Shared server → project scope. Personal secret → environment expansion, never committed. Missing tools → verify discovery (what the client listed at connection time) before debugging the server.</p>
+  </details>
+
+  <details>
+    <summary>11. Inclusion and exclusion criteria — the missing negative boundary</summary>
+    <p>A prompt that says what to find, with options that only strengthen the positive instruction. The flood comes from the missing negative boundary.</p>
+    <p class="ans"><strong>Resolution:</strong> A model told what to find but not what to skip will generate findings in categories where its performance is unreliable. Exclusion criteria name the categories not to report — they are how you stop the model doing work it shouldn't.</p>
+  </details>
+
+  <details>
+    <summary>12. Glob finds paths, Grep finds callers — the most confused tool pair</summary>
+    <p>A change-propagation scenario with a Glob option that sounds thorough. Glob can enumerate every file that might matter and still answer none of "who calls this."</p>
+    <p class="ans"><strong>Resolution:</strong> Call sites are <em>content</em>, and Glob matches only paths. Grep to enumerate, Read to verify, then Edit. Run it once by hand in a real repo — the distinction sticks the first time you run it.</p>
+  </details>
+
+  <details>
+    <summary>13. Fast scripted startup — --bare earns its keep</summary>
+    <p>A scripted invocation is slow, and the options offer bigger machines or caching. The cost is auto-discovery — and you skip it only because you're supplying the prompt content yourself.</p>
+    <p class="ans"><strong>Resolution:</strong> <code>--bare</code> skips skill/command/settings auto-discovery. <code>--system-prompt-file</code> injects the content directly. When the script already knows the content, <code>--bare</code> skips discovery and the file flag supplies the text.</p>
+  </details>
+
+  <details>
+    <summary>14. Why resources are faster — the round-trip mechanism</summary>
+    <p>"Expose it as a resource" is easy to recognize and easy to choose for the wrong reason ("resources are cached"). The actual mechanism is about model turns.</p>
+    <p class="ans"><strong>Resolution:</strong> Every tool call is a model reasoning round-trip. A resource read happens client-side with no model turn at all. Removing exploratory tool calls removes turns, and the turns are the latency. A correct option chosen without the mechanism is luck that doesn't repeat.</p>
+  </details>
+</section>
+
+<section>
+  <p class="kicker">Practice tiers</p>
+  <h2>How to use this guide</h2>
+  <p class="lede">The drills are tiered by register, from direct recall to exam-density scenarios. The sequence per domain: concept drill first, then domain drill, then targeted drill wherever your misses cluster.</p>
+
+  <div class="tw"><table>
+    <thead><tr><th>Tier</th><th>Register</th><th>Items</th><th>Target</th></tr></thead>
+    <tbody>
+      <tr><td>Concept drills</td><td>Direct, no-scenario</td><td>12/domain, 60 total</td><td>90%+</td></tr>
+      <tr><td>Domain drills</td><td>Olivier-density scenarios</td><td>10/domain, 50 total</td><td>80%+</td></tr>
+      <tr><td>Targeted drills</td><td>Weak-spot focused</td><td>10/drill, 40 total</td><td>80%+</td></tr>
+      <tr><td>Mock exam</td><td>Full exam density</td><td>60 items, 120 min</td><td>720+</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout">
+    <p class="kicker">The gap is the signal</p>
+    <p style="margin-bottom:0">A concept-drill score above 90% with a mock score below 720 means the gap is in scenario application, not knowledge. Focus on domain drills and targeted drills, not more concept drills. The exam grades whether you can <em>select</em> mechanisms under scenario pressure, not whether you can state them cold.</p>
+  </div>
+
+  <p style="margin-top:1.3rem"><strong>Key files:</strong></p>
+  <ul class="plain">
+    <li><a href="../LESSON-PLAN.md">LESSON-PLAN.md</a> — the full 6-phase preparation sequence</li>
+    <li><a href="../HOW-TO-PRACTISE.md">HOW-TO-PRACTISE.md</a> — the drill loop, calibration, and hands-on reps</li>
+    <li><a href="../practice/detailed-cheatsheet.md">practice/detailed-cheatsheet.md</a> — the golden rules and per-domain deep dives</li>
+    <li><a href="../practice/exam-day-cram.md">practice/exam-day-cram.md</a> — the 10-minute pre-exam refresher</li>
+    <li><a href="../guide/trap-patterns.md">guide/trap-patterns.md</a> — all 14 trap patterns with worked examples</li>
+  </ul>
+</section>
+
+<footer class="foot">
+  <p>Compiled by <strong>Chit Boon Lee</strong> and <strong>Claude</strong>. Unofficial. Not affiliated with, endorsed by, or sponsored by Anthropic.</p>
+  <p>Source: <a href="https://github.com/chitboon/ccar-f-field-guide">github.com/chitboon/ccar-f-field-guide</a> · <a href="https://github.com/chitboon/ccao-f-field-guide">CCAO-F sibling guide</a></p>
+</footer>
+
+</div>
+</body>
+</html>
