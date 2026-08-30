@@ -1,0 +1,23 @@
+title: CCAR-F Field Guide
+description: >-
+  Unofficial study guide for the Claude Certified Architect – Foundations
+  (CCAR-F) exam by Anthropic. 210 practice items, 60-item mock exam,
+  14 trap patterns, domain drills, cheatsheet. Agentic architecture,
+  MCP, tool design, prompt engineering, context management.
+url: https://chitboon.github.io
+baseurl: /ccar-f-field-guide
+
+author: Chit Boon Lee
+twitter:
+  username: ""
+  card: summary_large_image
+logo: ""
+
+plugins:
+  - jekyll-seo-tag
+
+defaults:
+  - scope:
+      path: ""
+    values:
+      layout: default
