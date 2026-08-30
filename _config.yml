@@ -12,6 +12,7 @@ twitter:
   username: ""
   card: summary_large_image
 logo: https://chitboon.github.io/ccar-f-field-guide/assets/og-image.png
+image: https://chitboon.github.io/ccar-f-field-guide/assets/og-image.png
 
 plugins:
   - jekyll-seo-tag
